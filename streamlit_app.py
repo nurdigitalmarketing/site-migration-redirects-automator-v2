@@ -90,11 +90,10 @@ def create_page_footer_with_contact_info():
     """
     footer_html = (
         "<hr style='height:2px;border-width:0;color:gray;background-color:gray'>"
-        "<p style='font-style: italic;'>Original built by "
-        "<a href='https://leefoot.co.uk/'>Lee Foot,</a></p>"
+        "<p style='font-style: italic;'>Originally built by "
+        "<a href='https://leefoot.co.uk/'>Lee Foot.</a></p>"
     )
     st.markdown(footer_html, unsafe_allow_html=True)
-
 
 def validate_uploaded_files(file1, file2):
     """
@@ -550,11 +549,11 @@ def select_columns_for_matching(df_live, df_staging):
     default_additional_columns = ['H1-1', 'Title 1', 'Titel 1', 'Título 1', 'Titolo 1']
     default_selection = [col for col in default_additional_columns if col in additional_columns]
 
-    st.write("Select additional columns to match (optional, max 3):")
+    st.write("Selezionare altre colonne da abbinare (optional, max 3):")
     max_additional_columns = min(3, len(additional_columns))
     # Ensure default selections do not exceed the maximum allowed
     default_selection = default_selection[:max_additional_columns]
-    selected_additional_columns = st.multiselect("Additional Columns", additional_columns,
+    selected_additional_columns = st.multiselect("Colonne aggiuntive", additional_columns,
                                                  default=default_selection,
                                                  max_selections=max_additional_columns)
     return address_column, selected_additional_columns
@@ -764,7 +763,7 @@ def create_excel_download_link(filename):
     download_link = (
         f'<a href="data:application/vnd.openxmlformats-officedocument.'
         f'spreadsheetml.sheet;base64,{b64}" download="{filename}">'
-        f'Click here to download {filename}</a>'
+        f'Clicca qui per scaricare il file {filename}</a>'
     )
     return download_link
 
