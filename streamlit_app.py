@@ -18,6 +18,7 @@ def setup_streamlit_interface():
     Sets up the Streamlit interface for the Automatic Website Migration Tool.
     Configures the page layout, title, and adds creator information and instructions.
     """
+    st.set_page_config(page_title="Site Migration Redirects Automator | NUR® Digital Marketing", layout="wide")
     st.title("Site Migration Redirects Automator")
 
     show_instructions_expander()
