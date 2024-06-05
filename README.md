@@ -1,5 +1,5 @@
 
-# Automatic Website Migration Tool
+# Site Migration Redirects Automator v.2
 
 This project is an automatic website migration tool developed by [LeeFootSEO](https://twitter.com/LeeFootSEO) and adapted by [NUR® Digital Marketing](https://www.nur.it) to provide a better user interface with instructions in Italian.
 
@@ -85,5 +85,3 @@ This tool was originally created by [LeeFootSEO](https://twitter.com/LeeFootSEO)
 
 - **LeeFootSEO**: [Twitter](https://twitter.com/LeeFootSEO), [Website](https://leefoot.co.uk)
 - **NUR® Digital Marketing**: [Website](https://www.nur.it)
-
-Need an app? Want to run this as a managed service? [Contact us!](mailto:hello@leefoot.co.uk)
