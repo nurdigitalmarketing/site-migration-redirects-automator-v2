@@ -9,11 +9,7 @@ from polyfuzz.models import TFIDF, EditDistance, RapidFuzz
 import plotly.graph_objects as go
 import xlsxwriter
 
-# Funzione per formattare i numeri
-def formatta_numero(numero):
-    """Formatta il numero con il punto come separatore delle migliaia."""
-    num_str = f"{numero:,}"
-    return num_str.replace(',', '.')
+# Original tool build by LeeFootSEO | https://leefoot.co.uk | 10th December 2023
 
 # Streamlit Interface Setup and Utilities ------------------------------------------------------------------------------
 
@@ -22,16 +18,7 @@ def setup_streamlit_interface():
     Sets up the Streamlit interface for the Automatic Website Migration Tool.
     Configures the page layout, title, and adds creator information and instructions.
     """
-    st.set_page_config(page_title="Strumento di Migrazione Automatica del Sito Web", layout="wide")
-    
-    col1, col2 = st.columns([1, 7])
-    with col1:
-        st.image("https://raw.githubusercontent.com/nurdigitalmarketing/previsione-del-traffico-futuro/9cdbf5d19d9132129474936c137bc8de1a67bd35/Nur-simbolo-1080x1080.png", width=80)
-    with col2:
-        st.title("Strumento di Migrazione Automatica del Sito Web")
-        st.markdown("###### by [LeeFootSEO](https://twitter.com/LeeFootSEO) e [NUR® Digital Marketing](https://www.nur.it)")
-
-    st.markdown("### Migra facilmente i dati del tuo sito web")
+    st.title("Site Migration Redirects Automator")
 
     show_instructions_expander()
 
@@ -48,7 +35,7 @@ def create_file_uploader_widget(column, file_types):
     streamlit.file_uploader: The file uploader widget.
     """
     file_type_label = "/".join(file_types).upper()  # Creating a string like "CSV/XLSX/XLS"
-    return st.file_uploader(f"Carica {column} {file_type_label}", type=file_types)
+    return st.file_uploader(f"Upload {column} {file_type_label}", type=file_types)
 
 
 def select_columns_for_data_matching(title, options, default_value, max_selections):
@@ -92,7 +79,7 @@ def show_instructions_expander():
         "- Una volta elaborato, verrà fornito un link per il download del file di output.\n"
         "- Verranno mostrati statistiche come il punteggio medio di abbinamento e un punteggio totale di similarità media."
     )
-    with st.expander("Come utilizzare questo strumento"):
+    with st.expander("Come utilizzare lo strumento"):
         st.write(instructions)
 
 
@@ -102,8 +89,8 @@ def create_page_footer_with_contact_info():
     """
     footer_html = (
         "<hr style='height:2px;border-width:0;color:gray;background-color:gray'>"
-        "<p style='font-style: italic;'>Hai bisogno di un'app? Vuoi eseguire questo come un servizio gestito? "
-        "<a href='mailto:hello@leefoot.co.uk'>Assumimi!</a></p>"
+        "<p style='font-style: italic;'>Original built by "
+        "<a href='https://leefoot.co.uk/'>Lee Foot,</a></p>"
     )
     st.markdown(footer_html, unsafe_allow_html=True)
 
@@ -121,7 +108,7 @@ def validate_uploaded_files(file1, file2):
     """
     if not file1 or not file2 or file1.getvalue() == file2.getvalue():
         show_warning_message(
-            "Attenzione: Lo stesso file è stato caricato per entrambi live e staging. Si prega di caricare file diversi.")
+            "Attenzione: Lo stesso file è stato caricato sia per il live che per lo staging. Si prega di caricare file diversi.")
         return False
     return True
 
@@ -157,7 +144,7 @@ def handle_data_matching_and_processing(df_live, df_staging, address_column, sel
     pd.DataFrame: The final processed dataframe after matching.
     """
     message_placeholder = st.empty()
-    message_placeholder.info('Abbinamento delle colonne, per favore attendi!')
+    message_placeholder.info('Matching delle colonne, Attendere!')
 
     rename_dataframe_column(df_live, address_column, 'Address')
     rename_dataframe_column(df_staging, address_column, 'Address')
@@ -183,7 +170,7 @@ def read_excel_file(file, dtype):
     Returns:
     pd.DataFrame: DataFrame containing the data from the Excel file.
     """
-    return pd.read_excel(file, dtype=dtype)
+    return pd.read_excel_file(file, dtype=dtype)
 
 
 def read_csv_file_with_detected_encoding(file, dtype):
@@ -333,9 +320,9 @@ def match_columns_and_compute_scores(model, df_live, df_staging, matching_column
                 matches_scores[col] = matches
 
             else:
-                st.warning(f"La colonna '{col}' nei dati live o staging non è una serie valida.")
+                st.warning(f"La colonna '{col}' nei dati live o di staging non è una serie valida.")
         else:
-            st.warning(f"La colonna '{col}' non esiste in entrambi i dati live e staging.")
+            st.warning(f"La colonna '{col}' non esiste sia nei dati live che in quelli di staging.")
 
     return matches_scores
 
@@ -435,7 +422,7 @@ def finalise_match_results_processing(df_live, df_staging, matches_scores, match
     df_live (pd.DataFrame): The DataFrame containing live data.
     df_staging (pd.DataFrame): The DataFrame containing staging data.
     matches_scores (dict): Dictionary containing match scores for columns.
-    matching_columns (list): List of columns used for matching.
+    matching_columns (list): List of column names used for matching.
     selected_additional_columns (list): List of additional columns selected for matching.
 
     Returns:
@@ -475,7 +462,7 @@ def process_uploaded_files_and_match_data(df_live, df_staging, matching_columns,
         progress = (index + 1) / len(matching_columns)
         progress_bar.progress(progress)
 
-    message_placeholder.info('Finalizzando l\'elaborazione. Per favore attendi!')
+    message_placeholder.info('Sto ultimando il proceddi. Attendere!')
     df_final = finalise_match_results_processing(df_live, df_staging, matches_scores, matching_columns,
                                                  selected_additional_columns)
 
@@ -555,18 +542,18 @@ def select_columns_for_matching(df_live, df_staging):
     address_defaults = ['Address', 'URL', 'url', 'Adresse', 'Dirección', 'Indirizzo']
     default_address_column = next((col for col in address_defaults if col in common_columns), common_columns[0])
 
-    st.write("Seleziona la colonna da utilizzare come 'Address':")
-    address_column = st.selectbox("Colonna Address", common_columns, index=common_columns.index(default_address_column))
+    st.write("Select the column to use as 'Address':")
+    address_column = st.selectbox("Address Column", common_columns, index=common_columns.index(default_address_column))
 
     additional_columns = [col for col in common_columns if col != address_column]
     default_additional_columns = ['H1-1', 'Title 1', 'Titel 1', 'Título 1', 'Titolo 1']
     default_selection = [col for col in default_additional_columns if col in additional_columns]
 
-    st.write("Seleziona colonne aggiuntive da abbinare (opzionale, massimo 3):")
+    st.write("Select additional columns to match (optional, max 3):")
     max_additional_columns = min(3, len(additional_columns))
     # Ensure default selections do not exceed the maximum allowed
     default_selection = default_selection[:max_additional_columns]
-    selected_additional_columns = st.multiselect("Colonne Aggiuntive", additional_columns,
+    selected_additional_columns = st.multiselect("Additional Columns", additional_columns,
                                                  default=default_selection,
                                                  max_selections=max_additional_columns)
     return address_column, selected_additional_columns
@@ -603,9 +590,9 @@ def plot_median_score_histogram(df_final, col):
     with col:
         plt.figure(figsize=(5, 3))
         ax = bracket_counts.plot(kind='bar', width=0.9)
-        ax.set_title('Distribuzione dei punteggi mediani di abbinamento', fontsize=10)
-        ax.set_xlabel('Fasce di punteggio medio di abbinamento', fontsize=8)
-        ax.set_ylabel('Conteggio URL', fontsize=8)
+        ax.set_title('Distribution of Median Match Scores', fontsize=10)
+        ax.set_xlabel('Median Match Score Brackets', fontsize=8)
+        ax.set_ylabel('URL Count', fontsize=8)
         ax.tick_params(axis='both', which='major', labelsize=8)
         ax.grid(axis='y')
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: int(x)))
@@ -647,7 +634,7 @@ def display_median_similarity_indicator_chart(df_final, col):
         value=median_similarity_score,
         delta={'reference': reference_value, 'relative': False, 'valueformat': '.2%'},
         number={'valueformat': '.2%', 'font': {'color': 'black'}},
-        title={'text': "Punteggio Medio di Similarità delle Colonne Abbinate", 'font': {'color': 'black'}},
+        title={'text': "Highest Matching Column Median Similarity Score", 'font': {'color': 'black'}},
         domain={'row': 0, 'column': 0}))
 
     fig.update_layout(
@@ -755,9 +742,9 @@ def add_chart_to_excel_sheet(excel_writer, score_data):
         'values': "='Median Score Distribution'!$B$2:$B$" + str(max_row),
     })
 
-    chart.set_title({'name': 'Distribuzione dei Punteggi Medi di Abbinamento'})
-    chart.set_x_axis({'name': 'Fasce di Punteggio Medio di Abbinamento'})
-    chart.set_y_axis({'name': 'Conteggio URL'})
+    chart.set_title({'name': 'Distribution of Median Match Scores'})
+    chart.set_x_axis({'name': 'Median Match Score Brackets'})
+    chart.set_y_axis({'name': 'URL Count'})
     worksheet2.insert_chart('D2', chart)
 
 
@@ -872,15 +859,15 @@ def main():
     # Advanced settings expander for model selection
     with st.expander("Impostazioni Avanzate"):
         model_options = ['TF-IDF', 'Edit Distance', 'RapidFuzz']
-        selected_model = st.selectbox("Seleziona il Modello di Abbinamento", model_options)
+        selected_model = st.selectbox("Selezionare il modello di corrispondenza", model_options)
 
         if selected_model == "TF-IDF":
-            st.write("Utilizza TF-IDF per un'analisi testuale completa, adatta alla maggior parte dei casi d'uso.")
+            st.write("Utilizzare TF-IDF per un'analisi completa del testo, adatta alla maggior parte dei casi d'uso.")
         elif selected_model == "Edit Distance":
             st.write(
-                "Edit Distance è utile per abbinare basandosi su differenze a livello di caratteri, come piccole variazioni di testo.")
+                "Edit Distance è utile per la corrispondenza basata su differenze a livello di carattere, come piccole variazioni di testo.")
         elif selected_model == "RapidFuzz":
-            st.write("RapidFuzz è efficiente per grandi set di dati, offrendo un abbinamento di stringhe veloce e approssimativo.")
+            st.write("RapidFuzz è efficiente per grandi insiemi di dati e offre una corrispondenza rapida e approssimativa delle stringhe.")
 
     file_live, file_staging = create_file_uploader_widgets()
     if file_live and file_staging:
@@ -888,7 +875,7 @@ def main():
         if df_live is not None and df_staging is not None:
             address_column, selected_additional_columns = select_columns_for_matching(df_live,
                                                                                       df_staging)
-            if st.button("Processa File"):
+            if st.button("Esegui"):
                 df_final = handle_data_matching_and_processing(df_live, df_staging, address_column,
                                                                selected_additional_columns,
                                                                selected_model)
