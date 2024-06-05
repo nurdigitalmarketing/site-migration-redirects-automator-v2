@@ -19,10 +19,16 @@ def setup_streamlit_interface():
     Configures the page layout, title, and adds creator information and instructions.
     """
     st.set_page_config(page_title="Site Migration Redirects Automator | NUR® Digital Marketing", layout="wide")
-    st.title("Site Migration Redirects Automator")
+
+    col1, col2 = st.columns([1, 7])
+    with col1:
+        st.image("https://raw.githubusercontent.com/nurdigitalmarketing/previsione-del-traffico-futuro/9cdbf5d19d9132129474936c137bc8de1a67bd35/Nur-simbolo-1080x1080.png", width=80)
+    with col2:
+        st.title('Site Migration Redirects Automator')
+        st.markdown('###### built by [LeeFootSEO](https://www.nur.it) & refined by [NUR® Digital Marketing](https://leefoot.co.uk/)')
 
     show_instructions_expander()
-
+ 
 
 def create_file_uploader_widget(column, file_types):
     """
