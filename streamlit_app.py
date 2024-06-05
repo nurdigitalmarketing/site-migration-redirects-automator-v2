@@ -542,7 +542,7 @@ def select_columns_for_matching(df_live, df_staging):
     address_defaults = ['Address', 'URL', 'url', 'Adresse', 'Dirección', 'Indirizzo']
     default_address_column = next((col for col in address_defaults if col in common_columns), common_columns[0])
 
-    st.write("Select the column to use as 'Address':")
+    st.write("Seleziona la colonna da utilizzare come 'Address':")
     address_column = st.selectbox("Address Column", common_columns, index=common_columns.index(default_address_column))
 
     additional_columns = [col for col in common_columns if col != address_column]
@@ -857,7 +857,7 @@ def main():
     setup_streamlit_interface()
 
     # Advanced settings expander for model selection
-    with st.expander("Impostazioni Avanzate"):
+    with st.expander("Impostazioni avanzate"):
         model_options = ['TF-IDF', 'Edit Distance', 'RapidFuzz']
         selected_model = st.selectbox("Selezionare il modello di corrispondenza", model_options)
 
