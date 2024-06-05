@@ -9,7 +9,7 @@ from polyfuzz.models import TFIDF, EditDistance, RapidFuzz
 import plotly.graph_objects as go
 import xlsxwriter
 
-# Original tool build by LeeFootSEO | https://leefoot.co.uk | 10th December 2023
+# The original tool was created by LeeFootSEO | https://leefoot.co.uk | 10th December 2023
 
 # Streamlit Interface Setup and Utilities ------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ def create_page_footer_with_contact_info():
     footer_html = (
         "<hr style='height:2px;border-width:0;color:gray;background-color:gray'>"
         "<p style='font-style: italic;'>Originally built by "
-        "<a href='https://leefoot.co.uk/'>Lee Foot.</a></p>"
+        "<a href='https://leefoot.co.uk/'>LeeFootSEO.</a></p>"
     )
     st.markdown(footer_html, unsafe_allow_html=True)
 
