@@ -96,8 +96,8 @@ def create_page_footer_with_contact_info():
     """
     footer_html = (
         "<hr style='height:2px;border-width:0;color:gray;background-color:gray'>"
-        "<p style='font-style: italic;'>Originally built by "
-        "<a href='https://leefoot.co.uk/'>LeeFootSEO.</a></p>"
+        "<p style='font-style: italic;'>We're "
+        "<a href='https://www.nur.it/'>NUR® Digital Marketing</a>!</p>"
     )
     st.markdown(footer_html, unsafe_allow_html=True)
 
